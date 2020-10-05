@@ -1,0 +1,152 @@
+<html>
+<!DOCTYPE html>
+<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css2?family=Piazzolla&display=swap" rel="stylesheet" type="text/css">
+<style>
+body {
+  background-image: url('https://miro.medium.com/max/1124/1*92adf06PCF91kCYu1nPLQg.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+h1{
+ padding: 40px;
+ margin: 20px;
+ font-size: 60px;
+ color: Yellow;
+ font-family: Lobster;
+}
+.thick-green-border{
+  border-color: green;
+  border-width: 10px;
+  border-style: solid;
+  background-color: yellow;
+}
+.thick-red-border{
+  border-color: red;
+  border-width: 10px;
+  border-style: dotted;
+  border-radius: 10px;
+  color: Black;
+  background-color: rgb(173,216,230);
+}
+.button {
+  background-color: #4CAF50; /* Green */
+  border: auto;
+  border-radius: 10px;
+  color: white;
+  padding: 20px 140px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.fbutton {
+  background-color: #4CAF50; /* Green */
+  border: auto;
+  border-radius: 10px;
+  color: white;
+  padding: 20px 140px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+h2{
+font-size: 30px;
+font-family: Piazzolla;
+padding: 40px;
+ margin: 20px;
+}
+form{
+font-size: 30px;
+padding: 50px;
+margin: auto;
+}
+h3{
+ font-size: 25px;
+ font-family: Piazzolla;
+ color: Pink;
+}
+</style>
+<head>
+<center><h1> Cycle Detection </h1></center>
+<center><h3>Using Floyd's Cycle Detection Algorithm</h3></center>
+</head>
+<body>
+<form name="myForm" onsubmit="return add()" method="post">
+  Enter Value: <input type="text" name="fname">
+  <br></br>
+  <center><input type="submit" value="Add a Node" class="button"></center>
+</form>
+<form name="cycleForm" onsubmit="return addCycle()" method="post">
+  Cycle Creation(Optional): <input type="text" name="cyclename">
+  <br></br>
+  <center><input type="submit" value="Connect This Node to Last Node" class="button"></center>
+  <br></br>
+    <center><button onclick="return detectLoop()" type="button" class="fbutton">Validate Cycle</button>
+</form>
+<div id="currentlist">
+<h2>Current List:</h2>
+</div>
+</body>
+<script>
+class Node{
+    constructor(element){
+        this.element = element;
+        this.next = null;
+    }
+}
+var head;
+function add(){
+  var val = document.forms["myForm"]["fname"].value;
+  document.getElementById("currentlist").innerHTML += val+" -> ";
+    if(head == null){
+        head = new Node(val);
+        return false;
+    }
+    var temp = new Node(val);
+    temp.next = head;
+    head = temp;
+    return false;
+}
+function addCycle(){
+  var data = document.forms["cycleForm"]["cyclename"].value;
+    var current = head;
+    while(current != null){
+        if(current.element == data){
+            break;
+        }
+        current = current.next;
+    }
+    var temp = head;
+    while(temp.next != null){
+       temp = temp.next;
+    }
+    temp.next = current;
+    return false;
+}
+function detectLoop(){
+    var slow_pointer = head;
+    var fast_pointer = head;
+    while(slow_pointer && fast_pointer && fast_pointer.next){
+        slow_pointer = slow_pointer.next;
+        fast_pointer = fast_pointer.next.next;
+        if(slow_pointer == fast_pointer){
+            alert("Found a Cycle !");
+            return false;
+        }
+    }
+    alert("No Cycle Found !");
+    return false;
+}
+
+</script>
+</html>
